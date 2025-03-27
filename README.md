@@ -1,5 +1,5 @@
 
-Rota	Método	Porta Interna	Porta Externa Recomendada	Descrição \n
+Rota	Método	Porta Interna	Porta Externa Recomendada	Descrição
 
 /users	GET	5000	443 (HTTPS)	Lista todos os usuários
 
