@@ -1,0 +1,7 @@
+version: "2"
+authtoken: 2n9Ygy8rr9bjjPtIpzEstnSHUNp_59pi4RiXJfpKXB3gdGHLK
+tunnels:
+  my-tunnel:
+    proto: http
+    addr: 5000  # Porta onde seu servidor local está rodando
+

@@ -1,0 +1,55 @@
+# Diretórios de desenvolvimento específicos
+.vs/
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ambiente Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+pip-selfcheck.json
+
+# Cache e logs
+*.log
+*.cache
+*.pot
+*.pyc
+.pytest_cache/
+
+# Arquivos de configuração local
+*.local
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de build/distribuição
+build/
+dist/
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+
+# Arquivos de banco de dados
+*.db
+*.sqlite
+*.sqlite3
+
+# Arquivos

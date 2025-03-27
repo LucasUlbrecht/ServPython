@@ -1,0 +1,111 @@
+<script>
+    // Verifica se o token do usuário existe (indicando que o usuário está logado)
+    document.addEventListener("DOMContentLoaded", function() {
+        var userToken = localStorage.getItem("userToken");  // Checa no localStorage o token do usuário
+        
+        if (!userToken) {
+            // Exibe o pop-up se o usuário não estiver logado
+            showLoginPopup();
+        }
+    });
+
+    // Função para exibir o pop-up
+    function showLoginPopup() {
+        var popup = document.createElement('div');
+        popup.classList.add('popup');
+        popup.innerHTML = `
+            <div class="modal" tabindex="-1" style="display: block; z-index: 1050;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Cadastro/Login</h5>
+                            <button type="button" class="btn-close" onclick="closePopup()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="loginForm">
+                                <label for="username">Nome de Usuário:</label>
+                                <input type="text" id="username" required><br><br>
+                                <label for="password">Senha:</label>
+                                <input type="password" id="password" required><br><br>
+                                <button type="submit">Entrar</button>
+                            </form>
+                            <button onclick="showRegisterForm()">Cadastrar-se</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(popup);
+    }
+
+    // Função para fechar o pop-up
+    function closePopup() {
+        var popup = document.querySelector('.popup');
+        if (popup) {
+            popup.remove();
+        }
+    }
+
+    // Função para exibir a tela de cadastro no pop-up
+    function showRegisterForm() {
+        var modalBody = document.querySelector('.modal-body');
+        modalBody.innerHTML = `
+            <form id="registerForm">
+                <label for="username">Nome de Usuário:</label>
+                <input type="text" id="username" required><br><br>
+                <label for="password">Senha:</label>
+                <input type="password" id="password" required><br><br>
+                <button type="submit">Cadastrar</button>
+            </form>
+            <button onclick="closePopup()">Fechar</button>
+        `;
+    }
+
+    // Lógica para login e cadastro
+    document.getElementById('loginForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        fetch('/login', {  // Requisição de login para o Flask
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ user_id: username, password: password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                // Se o login for bem-sucedido, armazena o token no localStorage
+                localStorage.setItem("userToken", data.token);
+                closePopup();  // Fecha o pop-up após login bem-sucedido
+                window.location.reload();  // Recarrega a página para exibir os dados
+            } else {
+                alert("Credenciais inválidas.");
+            }
+        })
+        .catch(err => console.error(err));
+    });
+
+    // Lógica para cadastro
+    document.getElementById('registerForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        fetch('/register', {  // Envia dados para o cadastro
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ username: username, password: password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("Cadastro realizado com sucesso!");
+                closePopup();
+            } else {
+                alert("Erro no cadastro.");
+            }
+        })
+        .catch(err => console.error(err));
+    });
+</script>
